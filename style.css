@@ -1665,7 +1665,17 @@ img { max-width: 100%; }
     gap: 32px;
     z-index: 999;
   }
-  .nav-links.open a { font-size: 1.3rem; }
+  .nav-links.open a {
+    font-size: 1.3rem;
+    color: var(--text) !important;
+    opacity: 1 !important;
+  }
+  .nav-links.open .nav-cta {
+    background: linear-gradient(135deg, var(--accent), var(--accent2)) !important;
+    color: #fff !important;
+    padding: 12px 28px;
+    border-radius: 8px;
+  }
   .hamburger { z-index: 1000; }
   .sobre-grid { grid-template-columns: 1fr; gap: 40px; }
   .services-grid { grid-template-columns: 1fr; }
