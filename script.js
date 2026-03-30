@@ -47,20 +47,26 @@ navLinks.querySelectorAll('a').forEach(a => {
 
 /* ===== FADE-UP OBSERVER ===== */
 const fadeEls = document.querySelectorAll('.fade-up:not(.nav-links *)');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
-  });
-}, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
 
-fadeEls.forEach(el => {
-  const rect = el.getBoundingClientRect();
-  if (rect.top < window.innerHeight && rect.bottom > 0) {
-    setTimeout(() => el.classList.add('visible'), 80);
-  } else {
-    observer.observe(el);
-  }
-});
+// mobile: mostra tudo imediatamente, sem animação
+if (window.innerWidth < 768) {
+  fadeEls.forEach(el => el.classList.add('visible'));
+} else {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+
+  fadeEls.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      setTimeout(() => el.classList.add('visible'), 80);
+    } else {
+      observer.observe(el);
+    }
+  });
+}
 
 /* ===== ANIMATED COUNTERS ===== */
 function animateCounter(el) {
