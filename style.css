@@ -1401,6 +1401,15 @@ img { max-width: 100%; }
   transform: translateY(0);
 }
 
+/* mobile: desativa fade-up completamente no CSS */
+@media (max-width: 768px) {
+  .fade-up {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
 /* stagger children */
 .services-grid .service-card:nth-child(1) { transition-delay: 0.05s; }
 .services-grid .service-card:nth-child(2) { transition-delay: 0.1s; }
