@@ -136,43 +136,53 @@ document.querySelectorAll('.faq-question').forEach(btn => {
 /* ===== PARTICLES (home only) ===== */
 const canvas = document.getElementById('particles');
 if (canvas) {
-  const ctx = canvas.getContext('2d');
-  let particles = [], animId;
-  function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-  function createParticles() {
-    particles = [];
-    const count = Math.floor((canvas.width * canvas.height) / 18000);
-    for (let i = 0; i < count; i++) {
-      particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.5 + 0.3, dx: (Math.random() - 0.5) * 0.3, dy: (Math.random() - 0.5) * 0.3, alpha: Math.random() * 0.5 + 0.1 });
-    }
-  }
-  function drawParticles() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(129,140,248,${p.alpha})`; ctx.fill();
-      p.x += p.dx; p.y += p.dy;
-      if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-      if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
-    });
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 120) {
-          ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(99,102,241,${0.08 * (1 - dist / 120)})`; ctx.lineWidth = 0.5; ctx.stroke();
-        }
+  // desativa partículas em mobile — muito pesado
+  const isMobile = window.innerWidth < 768 || /Mobi|Android/i.test(navigator.userAgent);
+  if (isMobile) {
+    canvas.style.display = 'none';
+  } else {
+    const ctx = canvas.getContext('2d');
+    let particles = [], animId;
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    function createParticles() {
+      particles = [];
+      const count = Math.floor((canvas.width * canvas.height) / 18000);
+      for (let i = 0; i < count; i++) {
+        particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.5 + 0.3, dx: (Math.random() - 0.5) * 0.3, dy: (Math.random() - 0.5) * 0.3, alpha: Math.random() * 0.5 + 0.1 });
       }
     }
-    animId = requestAnimationFrame(drawParticles);
+    function drawParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(129,140,248,${p.alpha})`; ctx.fill();
+        p.x += p.dx; p.y += p.dy;
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+      });
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(99,102,241,${0.08 * (1 - dist / 120)})`; ctx.lineWidth = 0.5; ctx.stroke();
+          }
+        }
+      }
+      animId = requestAnimationFrame(drawParticles);
+    }
+    resizeCanvas(); createParticles(); drawParticles();
+    window.addEventListener('resize', () => { cancelAnimationFrame(animId); resizeCanvas(); createParticles(); drawParticles(); });
   }
-  resizeCanvas(); createParticles(); drawParticles();
-  window.addEventListener('resize', () => { cancelAnimationFrame(animId); resizeCanvas(); createParticles(); drawParticles(); });
-  window.addEventListener('scroll', () => {
-    const hero = document.getElementById('hero');
-    if (hero && window.scrollY < window.innerHeight) hero.style.transform = `translateY(${window.scrollY * 0.25}px)`;
-  });
+
+  // parallax só em desktop também
+  if (!isMobile) {
+    window.addEventListener('scroll', () => {
+      const hero = document.getElementById('hero');
+      if (hero && window.scrollY < window.innerHeight) hero.style.transform = `translateY(${window.scrollY * 0.25}px)`;
+    });
+  }
 }
 
 /* ===== CONTACT FORM ===== */

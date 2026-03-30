@@ -1695,3 +1695,23 @@ img { max-width: 100%; }
   .hero-actions { flex-direction: column; align-items: center; }
   .contato-form { padding: 24px; }
 }
+
+/* ===== MOBILE PERFORMANCE ===== */
+@media (max-width: 768px) {
+  /* desativa orbs e animações pesadas */
+  .orb { display: none; }
+  .fade-up { transition-duration: 0.4s; }
+  /* desativa shimmer em mobile */
+  .shimmer-text { animation: none; }
+  /* reduz sombras pesadas */
+  .service-card:hover, .portfolio-card:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
