@@ -46,7 +46,7 @@ navLinks.querySelectorAll('a').forEach(a => {
 });
 
 /* ===== FADE-UP OBSERVER ===== */
-const fadeEls = document.querySelectorAll('.fade-up');
+const fadeEls = document.querySelectorAll('.fade-up:not(.nav-links *)');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
